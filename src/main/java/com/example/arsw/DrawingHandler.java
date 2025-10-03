@@ -15,12 +15,11 @@ public class DrawingHandler extends TextWebSocketHandler {
 
     @Override
     public void afterConnectionEstablished(WebSocketSession session) throws Exception {
-        sessions.add(session); // Añadir la sesión cuando el cliente se conecta
+        sessions.add(session); 
     }
 
     @Override
     public void handleTextMessage(WebSocketSession session, TextMessage message) throws IOException {
-        // Reenvía el mensaje a todos los clientes conectados
         for (WebSocketSession webSocketSession : sessions) {
             if (webSocketSession.isOpen()) {
                 webSocketSession.sendMessage(message);
@@ -30,6 +29,6 @@ public class DrawingHandler extends TextWebSocketHandler {
 
     @Override
     public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
-        sessions.remove(session); // Eliminar la sesión cuando el cliente se desconecta
+        sessions.remove(session); 
     }
 }

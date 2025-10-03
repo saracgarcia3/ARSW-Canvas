@@ -10,57 +10,50 @@
     <button onclick="clearBoard()">Clear Board</button>
 
     <script>
-        // Crear WebSocket
         const socket = new WebSocket('ws://localhost:8080/draw');
 
-        // Cuando recibimos un mensaje de WebSocket (dibujo de otro cliente)
         socket.onmessage = function(event) {
             const data = JSON.parse(event.data);
             if (data.clear) {
                 clearCanvas();
             } else {
-                drawReceived(data.x, data.y, data.color); // Dibuja los puntos de otros clientes
+                drawReceived(data.x, data.y, data.color); 
             }
         };
 
-        // Función para enviar el dibujo al servidor
         function sendDrawing(x, y, color) {
             const data = { x: x, y: y, color: color };
-            socket.send(JSON.stringify(data));  // Enviar datos de dibujo al servidor
+            socket.send(JSON.stringify(data));  
         }
 
-        // Función para borrar el tablero
         function clearBoard() {
             socket.send(JSON.stringify({ clear: true }));
             clearCanvas();
         }
 
-        // Limpiar el lienzo
         function clearCanvas() {
-            background(255);  // Limpia el lienzo a blanco
+            background(255);  
         }
 
-        let currentColor = 'black';  // Color de dibujo por defecto
+        let currentColor = 'black';  
 
-        // Configuración del lienzo de dibujo
+
         function setup() {
             createCanvas(640, 480);
-            background(255);  // Lienzo en blanco al inicio
+            background(255);  
         }
 
-        // Dibujar cuando el mouse está presionado
         function draw() {
             if (mouseIsPressed) {
                 fill(currentColor);
-                ellipse(mouseX, mouseY, 20, 20);  // Dibuja un círculo en la posición del mouse
-                sendDrawing(mouseX, mouseY, currentColor);  // Enviar el punto al servidor
+                ellipse(mouseX, mouseY, 20, 20);  
+                sendDrawing(mouseX, mouseY, currentColor);  
             }
         }
 
-        // Recibir los puntos de los demás clientes y dibujarlos
         function drawReceived(x, y, color) {
             fill(color);
-            ellipse(x, y, 20, 20);  // Dibuja el punto recibido en el lienzo
+            ellipse(x, y, 20, 20);  
         }
     </script>
 </body>
